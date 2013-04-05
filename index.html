@@ -1,0 +1,58 @@
+<html>
+ <head>
+  <meta charset="utf-8" />
+
+  <title>EchoSocket</title>
+  <script language="javascript" type="text/javascript">
+
+    WebSocketDemo = function(){
+
+      return {
+        ws: null,
+
+        init: function(url){
+          this.ws = new WebSocket(url);
+          this.onOpen();
+          this.onMessage();
+          this.onClose();
+        },
+
+        doSend: function(msg){
+          this.ws.send = function(evt) {
+            console.log(evt.timeStamp)
+          };
+        },
+
+        onOpen: function(){
+          this.ws.onopen = function(evt) {
+            console.log('CONNECTED: ' + evt.type);
+            WebSocketDemo.ws.send('techpro sockets');
+          };
+        },
+
+        onClose: function(){
+          this.ws.onclose = function(evt) {
+            //console.log('CLOSED: ' + ': ' + evt.type);
+          };
+        },
+
+        onMessage: function(msg){
+          this.ws.onmessage = function(evt) {
+            //console.log('RESPONSE: ' + ': ' + evt.data);
+            WebSocketDemo.ws.close();
+          };
+        }
+      }
+
+    }();
+
+     WebSocketDemo.init("ws://echo.websocket.org/");
+
+  </script>
+ </head>
+
+ <body>
+  <h2>EchoSocket</h2>
+  <div id="output"></div>
+ </body>
+ </html>
